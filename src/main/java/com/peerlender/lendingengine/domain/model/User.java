@@ -1,4 +1,4 @@
-package com.peerlender.lendingengine.model;
+package com.peerlender.lendingengine.domain.model;
 
 public final class User {
 
