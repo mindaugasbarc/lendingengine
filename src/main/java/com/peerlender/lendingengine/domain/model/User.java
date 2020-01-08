@@ -1,5 +1,7 @@
 package com.peerlender.lendingengine.domain.model;
 
+import java.util.Objects;
+
 public final class User {
 
     private final String firstName;
@@ -28,5 +30,31 @@ public final class User {
 
     public String getOccupation() {
         return occupation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return age == user.age &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(occupation, user.occupation);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, age, occupation);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", occupation='" + occupation + '\'' +
+                '}';
     }
 }

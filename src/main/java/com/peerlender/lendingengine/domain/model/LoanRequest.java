@@ -1,6 +1,7 @@
 package com.peerlender.lendingengine.domain.model;
 
 import java.time.Duration;
+import java.util.Objects;
 
 public final class LoanRequest {
 
@@ -31,5 +32,31 @@ public final class LoanRequest {
 
     public double getInterestRate() {
         return interestRate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LoanRequest that = (LoanRequest) o;
+        return amount == that.amount &&
+                Double.compare(that.interestRate, interestRate) == 0 &&
+                Objects.equals(borrower, that.borrower) &&
+                Objects.equals(repaymentTerm, that.repaymentTerm);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(amount, borrower, repaymentTerm, interestRate);
+    }
+
+    @Override
+    public String toString() {
+        return "LoanRequest{" +
+                "amount=" + amount +
+                ", borrower=" + borrower +
+                ", repaymentTerm=" + repaymentTerm +
+                ", interestRate=" + interestRate +
+                '}';
     }
 }
