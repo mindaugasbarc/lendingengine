@@ -9,12 +9,16 @@ public final class User {
 
     @Id
     private long id;
-    private final String firstName;
-    private final String lastName;
-    private final int age;
-    private final String occupation;
+    private String firstName;
+    private String lastName;
+    private int age;
+    private String occupation;
 
-    public User(String firstName, String lastName, int age, String occupation) {
+    public User() {
+    }
+
+    public User(long id, String firstName, String lastName, int age, String occupation) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
