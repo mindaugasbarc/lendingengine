@@ -11,17 +11,20 @@ public final class LoanApplication {
 
     @Id
     private long id;
-    private final int amount;
+    private int amount;
     @ManyToOne
-    private final User borrower;
-    private final Duration repaymentTerm;
-    private final double interestRate;
+    private User borrower;
+    private int repaymentTermInDays;
+    private double interestRate;
 
-    public LoanApplication(int amount, User borrower, Duration repaymentTerm,
+    public LoanApplication() {
+    }
+
+    public LoanApplication(int amount, User borrower, int repaymentTermInDays,
                            double interestRate) {
         this.amount = amount;
         this.borrower = borrower;
-        this.repaymentTerm = repaymentTerm;
+        this.repaymentTermInDays = repaymentTermInDays;
         this.interestRate = interestRate;
     }
 
@@ -33,8 +36,8 @@ public final class LoanApplication {
         return borrower;
     }
 
-    public Duration getRepaymentTerm() {
-        return repaymentTerm;
+    public int getRepaymentTermInDays() {
+        return repaymentTermInDays;
     }
 
     public double getInterestRate() {
@@ -49,12 +52,12 @@ public final class LoanApplication {
         return amount == that.amount &&
                 Double.compare(that.interestRate, interestRate) == 0 &&
                 Objects.equals(borrower, that.borrower) &&
-                Objects.equals(repaymentTerm, that.repaymentTerm);
+                Objects.equals(repaymentTermInDays, that.repaymentTermInDays);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(amount, borrower, repaymentTerm, interestRate);
+        return Objects.hash(amount, borrower, repaymentTermInDays, interestRate);
     }
 
     @Override
@@ -62,7 +65,7 @@ public final class LoanApplication {
         return "LoanRequest{" +
                 "amount=" + amount +
                 ", borrower=" + borrower +
-                ", repaymentTerm=" + repaymentTerm +
+                ", repaymentTerm=" + repaymentTermInDays +
                 ", interestRate=" + interestRate +
                 '}';
     }
