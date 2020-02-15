@@ -14,6 +14,7 @@ public final class Money {
 
     private Currency currency;
     private double amount;
+    public static final Money ZERO = new Money(0, Currency.USD);
 
     public Money() {
     }
@@ -35,6 +36,10 @@ public final class Money {
             throw new IllegalArgumentException();
         }
         return new Money(amount - money.getAmount(), currency);
+    }
+
+    public Money times(final double multiplier) {
+        return new Money(amount * multiplier, currency);
     }
 
     public Currency getCurrency() {

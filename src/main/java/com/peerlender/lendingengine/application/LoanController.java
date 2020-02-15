@@ -1,12 +1,12 @@
 package com.peerlender.lendingengine.application;
 
+import com.peerlender.lendingengine.application.model.LoanRepaymentRequest;
 import com.peerlender.lendingengine.application.model.LoanRequest;
 import com.peerlender.lendingengine.application.service.TokenValidationService;
 import com.peerlender.lendingengine.domain.model.Loan;
 import com.peerlender.lendingengine.domain.model.LoanApplication;
 import com.peerlender.lendingengine.domain.model.User;
 import com.peerlender.lendingengine.domain.repository.LoanApplicationRepository;
-import com.peerlender.lendingengine.domain.repository.UserRepository;
 import com.peerlender.lendingengine.domain.service.LoanApplicationAdapter;
 import com.peerlender.lendingengine.domain.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,14 @@ public class LoanController {
     }
 
     @PostMapping(value = "/loan/repay")
-    public void repayLoan(@RequestBody LoanRepayme)
+    public void repayLoan(@RequestBody LoanRepaymentRequest loanRepaymentRequest,
+                          @RequestHeader String authorization) {
+        User user = tokenValidationService.validateTokenAndGetUser(authorization);
+        loanService.repayLoan(loanRepaymentRequest.getAmount(),
+                loanRepaymentRequest.getLoanId(),
+                user
+        );
+    }
 
     @PostMapping(value = "/loan/accept/{loanApplicationId}")
     public void acceptLoan(@PathVariable final String loanApplicationId,
