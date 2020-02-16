@@ -1,9 +1,11 @@
 package com.peerlender.lendingengine.application;
 
+import com.peerlender.lendingengine.application.model.LoanRepaymentRequest;
 import com.peerlender.lendingengine.application.model.LoanRequest;
 import com.peerlender.lendingengine.application.service.TokenValidationService;
 import com.peerlender.lendingengine.domain.model.Loan;
 import com.peerlender.lendingengine.domain.model.LoanApplication;
+import com.peerlender.lendingengine.domain.model.Money;
 import com.peerlender.lendingengine.domain.model.User;
 import com.peerlender.lendingengine.domain.repository.LoanApplicationRepository;
 import com.peerlender.lendingengine.domain.repository.UserRepository;
@@ -59,7 +61,11 @@ public class LoanController {
     }
 
     @PostMapping(value = "/loan/repay")
-    public void repayLoan(@RequestBody LoanRepayme)
+    public void repayLoan(@RequestBody LoanRepaymentRequest request,
+                          @RequestHeader String authorization) {
+        User borrower = tokenValidationService.validateTokenAndGetUser(authorization);
+        loanService.repayLoan(request.getAmount(), request.getLoanId(), borrower);
+    }
 
     @PostMapping(value = "/loan/accept/{loanApplicationId}")
     public void acceptLoan(@PathVariable final String loanApplicationId,

@@ -8,6 +8,8 @@ import java.util.Objects;
 @Entity
 public final class Money {
 
+    public static final Money ZERO = new Money(0, Currency.USD);
+
     @Id
     @GeneratedValue
     private long id;
@@ -21,6 +23,10 @@ public final class Money {
     public Money(double amount, Currency currency) {
         this.currency = currency;
         this.amount = amount;
+    }
+
+    public Money times(double multiplier) {
+        return new Money(amount * multiplier, currency);
     }
 
     public Money add(final Money money) {
