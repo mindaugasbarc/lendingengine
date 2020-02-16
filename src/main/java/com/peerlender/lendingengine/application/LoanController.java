@@ -2,9 +2,10 @@ package com.peerlender.lendingengine.application;
 
 import com.peerlender.lendingengine.application.model.LoanRepaymentRequest;
 import com.peerlender.lendingengine.application.model.LoanRequest;
-import com.peerlender.lendingengine.application.service.TokenValidationService;
+import com.peerlender.lendingengine.application.service.impl.TokenValidationServiceImpl;
 import com.peerlender.lendingengine.domain.model.Loan;
 import com.peerlender.lendingengine.domain.model.LoanApplication;
+import com.peerlender.lendingengine.domain.model.Status;
 import com.peerlender.lendingengine.domain.model.User;
 import com.peerlender.lendingengine.domain.repository.LoanApplicationRepository;
 import com.peerlender.lendingengine.domain.service.LoanApplicationAdapter;
@@ -22,12 +23,12 @@ public class LoanController {
     private final LoanApplicationRepository loanApplicationRepository;
     private final LoanApplicationAdapter loanApplicationAdapter;
     private final LoanService loanService;
-    private final TokenValidationService tokenValidationService;
+    private final TokenValidationServiceImpl tokenValidationService;
 
     @Autowired
     public LoanController(LoanApplicationRepository loanApplicationRepository,
                           LoanApplicationAdapter loanApplicationAdapter, LoanService loanService,
-                          TokenValidationService tokenValidationService) {
+                          TokenValidationServiceImpl tokenValidationService) {
         this.loanApplicationRepository = loanApplicationRepository;
         this.loanApplicationAdapter = loanApplicationAdapter;
         this.loanService = loanService;
@@ -43,19 +44,21 @@ public class LoanController {
     @GetMapping(value = "/loan/requests")
     public List<LoanApplication> findAllLoanApplications(HttpServletRequest request) {
         tokenValidationService.validateTokenAndGetUser(request.getHeader(HttpHeaders.AUTHORIZATION));
-        return loanApplicationRepository.findAll();
+        return loanApplicationRepository.findAllByStatusEquals(Status.ONGOING);
     }
 
-    @GetMapping(value = "/loan/borrowed")
-    public List<Loan> findBorrowedLoans(@RequestHeader String authorization) {
+    @GetMapping(value = "/loan/{status}/borrowed")
+    public List<Loan> findBorrowedLoans(@RequestHeader String authorization,
+                                        @PathVariable Status status) {
         User borrower = tokenValidationService.validateTokenAndGetUser(authorization);
-        return loanService.findAllBorrowedLoans(borrower);
+        return loanService.findAllBorrowedLoans(borrower, status);
     }
 
-    @GetMapping(value = "/loan/lent")
-    public List<Loan> findLentLoans(@RequestHeader String authorization) {
+    @GetMapping(value = "/loan/{status}/lent")
+    public List<Loan> findLentLoans(@RequestHeader String authorization,
+                                    @PathVariable Status status) {
         User lender = tokenValidationService.validateTokenAndGetUser(authorization);
-        return loanService.findAllLentLoans(lender);
+        return loanService.findAllLentLoans(lender, status);
     }
 
     @PostMapping(value = "/loan/repay")

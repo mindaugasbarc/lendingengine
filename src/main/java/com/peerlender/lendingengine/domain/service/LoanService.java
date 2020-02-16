@@ -45,19 +45,15 @@ public class LoanService {
     public void acceptLoan(final long loanApplicationId, final String lenderUsername) {
         User lender = findUser(lenderUsername);
         LoanApplication loanApplication = findLoanApplication(loanApplicationId);
-        User borrower = loanApplication.getBorrower();
-        Money money = loanApplication.getAmount();
-        lender.withDraw(money);
-        borrower.topUp(money);
-        loanRepository.save(new Loan(lender, loanApplication));
+        loanRepository.save(loanApplication.acceptLoanApplication(lender));
     }
 
-    public List<Loan> findAllBorrowedLoans(final User borrower) {
-        return loanRepository.findAllByBorrower(borrower);
+    public List<Loan> findAllBorrowedLoans(final User borrower, final Status status) {
+        return loanRepository.findAllByBorrowerAndStatus(borrower, status);
     }
 
-    public List<Loan> findAllLentLoans(final User lender) {
-        return loanRepository.findAllByLender(lender);
+    public List<Loan> findAllLentLoans(final User lender, final Status status) {
+        return loanRepository.findAllByLenderAndStatus(lender, status);
     }
 
     private LoanApplication findLoanApplication(long loanApplicationId) {
