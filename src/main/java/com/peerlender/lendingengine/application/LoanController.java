@@ -2,6 +2,7 @@ package com.peerlender.lendingengine.application;
 
 import com.peerlender.lendingengine.application.model.LoanRepaymentRequest;
 import com.peerlender.lendingengine.application.model.LoanRequest;
+import com.peerlender.lendingengine.application.service.TokenValidationService;
 import com.peerlender.lendingengine.application.service.impl.TokenValidationServiceImpl;
 import com.peerlender.lendingengine.domain.model.Loan;
 import com.peerlender.lendingengine.domain.model.LoanApplication;
@@ -23,12 +24,12 @@ public class LoanController {
     private final LoanApplicationRepository loanApplicationRepository;
     private final LoanApplicationAdapter loanApplicationAdapter;
     private final LoanService loanService;
-    private final TokenValidationServiceImpl tokenValidationService;
+    private final TokenValidationService tokenValidationService;
 
     @Autowired
     public LoanController(LoanApplicationRepository loanApplicationRepository,
                           LoanApplicationAdapter loanApplicationAdapter, LoanService loanService,
-                          TokenValidationServiceImpl tokenValidationService) {
+                          TokenValidationService tokenValidationService) {
         this.loanApplicationRepository = loanApplicationRepository;
         this.loanApplicationAdapter = loanApplicationAdapter;
         this.loanService = loanService;

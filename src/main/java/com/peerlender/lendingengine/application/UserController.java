@@ -1,5 +1,6 @@
 package com.peerlender.lendingengine.application;
 
+import com.peerlender.lendingengine.application.service.TokenValidationService;
 import com.peerlender.lendingengine.application.service.impl.TokenValidationServiceImpl;
 import com.peerlender.lendingengine.domain.model.User;
 import com.peerlender.lendingengine.domain.repository.UserRepository;
@@ -14,11 +15,11 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private final TokenValidationServiceImpl tokenValidationService;
+    private final TokenValidationService tokenValidationService;
     private final UserRepository userRepository;
 
     @Autowired
-    public UserController(TokenValidationServiceImpl tokenValidationService, UserRepository userRepository) {
+    public UserController(TokenValidationService tokenValidationService, UserRepository userRepository) {
         this.tokenValidationService = tokenValidationService;
         this.userRepository = userRepository;
     }
